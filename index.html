@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f1013">
+<meta name="theme-color" content="#0b0b0d">
 <title>XLIP Studio</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,160 +11,270 @@
 
 <div id="app">
 
-  <!-- BARRA SUPERIOR -->
+  <!-- ============ BARRA SUPERIOR ============ -->
   <header id="topbar">
-    <div class="brand">
-      <span class="brand-mark">X</span>
-      <span class="brand-name">XLIP Studio</span>
+    <div class="top-left">
+      <div class="brand"><span class="brand-mark">X</span><span class="brand-name">XLIP</span></div>
+      <div class="menu-wrap">
+        <button id="btnMenu" class="btn btn-ghost" type="button"><span class="ic" data-icon="menu"></span><span class="btn-text">Menú</span></button>
+        <div id="menuPanel" class="menu-panel" hidden>
+          <button type="button" data-menu="new"><span class="ic" data-icon="new"></span>Proyecto nuevo</button>
+          <button type="button" data-menu="save"><span class="ic" data-icon="save"></span>Guardar proyecto</button>
+          <button type="button" data-menu="open"><span class="ic" data-icon="open"></span>Abrir proyecto</button>
+        </div>
+      </div>
+      <span id="saveStatus" class="muted small">Sin guardar</span>
     </div>
 
     <input id="projectName" type="text" value="Proyecto sin título" maxlength="40" aria-label="Nombre del proyecto">
 
-    <div class="top-actions">
-      <button id="btnMedia" class="btn mobile-only" type="button">Medios</button>
-      <button id="btnProps" class="btn mobile-only" type="button">Ajustes</button>
-
-      <button id="btnUndo" class="btn" type="button" title="Deshacer (Ctrl+Z)" disabled>
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>
-        <span class="btn-text">Deshacer</span>
-      </button>
-      <button id="btnRedo" class="btn" type="button" title="Rehacer (Ctrl+Y)" disabled>
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg>
-        <span class="btn-text">Rehacer</span>
-      </button>
-
-      <select id="aspectSelect" title="Relación de aspecto" aria-label="Relación de aspecto">
-        <option value="16:9" selected>16:9</option>
-        <option value="9:16">9:16</option>
-        <option value="1:1">1:1</option>
-        <option value="4:3">4:3</option>
-        <option value="3:4">3:4</option>
-      </select>
-
-      <button id="btnExport" class="btn btn-primary" type="button" disabled title="Disponible en la etapa 6">Exportar · Pronto</button>
+    <div class="top-right">
+      <button id="btnTools" class="btn mobile-only" type="button">Herramientas</button>
+      <button id="btnProps" class="btn mobile-only" type="button">Propiedades</button>
+      <button id="btnShortcuts" class="btn btn-ghost desktop-only" type="button"><span class="ic" data-icon="keyboard"></span><span class="btn-text">Atajos</span></button>
+      <button id="btnExport" class="btn btn-accent" type="button"><span class="ic" data-icon="export"></span><span class="btn-text">Exportar</span></button>
     </div>
   </header>
 
-  <!-- ESPACIO DE TRABAJO -->
+  <!-- ============ ESPACIO DE TRABAJO ============ -->
   <main id="workspace">
 
-    <!-- PANEL IZQUIERDO: HERRAMIENTAS Y MEDIOS -->
+    <!-- ---------- PANEL IZQUIERDO ---------- -->
     <aside id="leftPanel" class="panel">
       <nav id="toolTabs" aria-label="Herramientas">
-        <button class="tool-tab active" type="button" data-tab="media">Medios</button>
-        <button class="tool-tab" type="button" disabled>Texto<small>Pronto</small></button>
-        <button class="tool-tab" type="button" disabled>Efectos<small>Pronto</small></button>
-        <button class="tool-tab" type="button" disabled>Transic.<small>Pronto</small></button>
-        <button class="tool-tab" type="button" disabled>Filtros<small>Pronto</small></button>
-        <button class="tool-tab" type="button" disabled>Ajuste<small>Pronto</small></button>
+        <button class="tool-tab active" type="button" data-tab="media"><span class="ic" data-icon="import"></span><span>Medios</span></button>
+        <button class="tool-tab" type="button" data-tab="audio"><span class="ic" data-icon="audio"></span><span>Audio</span></button>
+        <button class="tool-tab" type="button" data-tab="text"><span class="ic" data-icon="text"></span><span>Texto</span></button>
+        <button class="tool-tab" type="button" data-tab="stickers"><span class="ic" data-icon="sticker"></span><span>Pegatinas</span></button>
+        <button class="tool-tab" type="button" data-tab="effects"><span class="ic" data-icon="effects"></span><span>Efectos</span></button>
+        <button class="tool-tab" type="button" data-tab="transitions"><span class="ic" data-icon="transitions"></span><span>Transic.</span></button>
+        <button class="tool-tab" type="button" data-tab="captions"><span class="ic" data-icon="captions"></span><span>Subtít.</span></button>
+        <button class="tool-tab" type="button" data-tab="filters"><span class="ic" data-icon="filters"></span><span>Filtros</span></button>
       </nav>
 
-      <section id="mediaTab" class="tab-body">
-        <button id="btnImport" class="btn btn-primary btn-block" type="button">+ Importar vídeo, imagen o audio</button>
-        <input id="fileInput" type="file" accept="video/*,image/*,audio/*" multiple hidden>
-        <p id="mediaEmpty" class="muted">Aún no hay archivos. Importa algo para empezar.</p>
-        <div id="mediaList"></div>
-        <p class="hint">Toca "Añadir" en un archivo para colocarlo en la línea de tiempo, en el punto donde está el cursor.</p>
-      </section>
+      <div id="toolContent">
+
+        <!-- Medios -->
+        <section class="tab-body" data-body="media">
+          <button class="btn btn-accent btn-block" type="button" data-import="all"><span class="ic" data-icon="import"></span>Importar vídeo, imagen o audio</button>
+          <p id="mediaEmpty" class="muted">Aún no hay archivos. Importa algo para empezar.</p>
+          <div id="mediaList" class="media-grid"></div>
+          <p class="hint">Toca un archivo para añadirlo a la línea de tiempo en el punto del cursor.</p>
+        </section>
+
+        <!-- Audio -->
+        <section class="tab-body" data-body="audio" hidden>
+          <button class="btn btn-accent btn-block" type="button" data-import="audio"><span class="ic" data-icon="audio"></span>Importar audio</button>
+          <p id="audioEmpty" class="muted">No hay audios importados.</p>
+          <div id="audioList" class="media-grid"></div>
+          <p class="hint">Los audios se colocan en la pista de audio. También puedes importar un vídeo y su sonido se reproduce con el clip.</p>
+        </section>
+
+        <!-- Texto -->
+        <section class="tab-body" data-body="text" hidden>
+          <h3 class="section-title">Estilos de texto</h3>
+          <div class="card-grid" id="textPresets">
+            <button class="card" type="button" data-preset="title"><span class="thumb thumb-text tp-title">Abc</span><span>Título</span></button>
+            <button class="card" type="button" data-preset="subtitle"><span class="thumb thumb-text tp-subtitle">Abc</span><span>Subtítulo</span></button>
+            <button class="card" type="button" data-preset="body"><span class="thumb thumb-text tp-body">Abc</span><span>Cuerpo</span></button>
+            <button class="card" type="button" data-preset="neon"><span class="thumb thumb-text tp-neon">Abc</span><span>Neón</span></button>
+            <button class="card" type="button" data-preset="outline"><span class="thumb thumb-text tp-outline">Abc</span><span>Contorno</span></button>
+            <button class="card" type="button" data-preset="shadow"><span class="thumb thumb-text tp-shadow">Abc</span><span>Sombra</span></button>
+            <button class="card" type="button" data-preset="box"><span class="thumb thumb-text tp-box">Abc</span><span>Caja</span></button>
+            <button class="card" type="button" data-preset="retro"><span class="thumb thumb-text tp-retro">Abc</span><span>Retro</span></button>
+          </div>
+          <p class="hint">Se añade en el cursor. Luego edítalo en el panel derecho (Texto).</p>
+        </section>
+
+        <!-- Pegatinas -->
+        <section class="tab-body" data-body="stickers" hidden>
+          <h3 class="section-title">Pegatinas</h3>
+          <div class="sticker-grid" id="stickerGrid">
+            <button type="button" data-emoji="😀">😀</button><button type="button" data-emoji="😂">😂</button>
+            <button type="button" data-emoji="😍">😍</button><button type="button" data-emoji="😎">😎</button>
+            <button type="button" data-emoji="🤩">🤩</button><button type="button" data-emoji="😭">😭</button>
+            <button type="button" data-emoji="🔥">🔥</button><button type="button" data-emoji="⭐">⭐</button>
+            <button type="button" data-emoji="❤️">❤️</button><button type="button" data-emoji="💯">💯</button>
+            <button type="button" data-emoji="👍">👍</button><button type="button" data-emoji="👏">👏</button>
+            <button type="button" data-emoji="🎉">🎉</button><button type="button" data-emoji="✨">✨</button>
+            <button type="button" data-emoji="💥">💥</button><button type="button" data-emoji="🎵">🎵</button>
+            <button type="button" data-emoji="🚀">🚀</button><button type="button" data-emoji="✈️">✈️</button>
+            <button type="button" data-emoji="🌟">🌟</button><button type="button" data-emoji="➡️">➡️</button>
+            <button type="button" data-emoji="⚡">⚡</button><button type="button" data-emoji="👑">👑</button>
+            <button type="button" data-emoji="🍕">🍕</button><button type="button" data-emoji="📍">📍</button>
+          </div>
+          <p class="hint">Las pegatinas se colocan en la pista de texto. Puedes moverlas y cambiar su tamaño.</p>
+        </section>
+
+        <!-- Efectos -->
+        <section class="tab-body" data-body="effects" hidden>
+          <h3 class="section-title">Efectos de vídeo</h3>
+          <p class="muted small">Selecciona primero un clip de vídeo o imagen.</p>
+          <div class="card-grid" id="effectGrid">
+            <button class="card" type="button" data-effect="none"><span class="thumb thumb-none">∅</span><span>Ninguno</span></button>
+            <button class="card" type="button" data-effect="blur"><span class="thumb thumb-fx fx-blur"></span><span>Desenfoque</span></button>
+            <button class="card" type="button" data-effect="vignette"><span class="thumb thumb-fx fx-vignette"></span><span>Viñeta</span></button>
+            <button class="card" type="button" data-effect="pixelate"><span class="thumb thumb-fx fx-pixelate"></span><span>Pixelado</span></button>
+            <button class="card" type="button" data-effect="shake"><span class="thumb thumb-fx fx-shake"></span><span>Temblor</span></button>
+            <button class="card" type="button" data-effect="pulse"><span class="thumb thumb-fx fx-pulse"></span><span>Pulso</span></button>
+            <button class="card" type="button" data-effect="glitch"><span class="thumb thumb-fx fx-glitch"></span><span>Glitch</span></button>
+          </div>
+        </section>
+
+        <!-- Transiciones -->
+        <section class="tab-body" data-body="transitions" hidden>
+          <h3 class="section-title">Transiciones</h3>
+          <p class="muted small">Se aplican al inicio del clip seleccionado, mezclándolo con el anterior.</p>
+          <div class="card-grid" id="transitionGrid">
+            <button class="card" type="button" data-transition="none"><span class="thumb thumb-none">∅</span><span>Ninguna</span></button>
+            <button class="card" type="button" data-transition="fade"><span class="thumb thumb-tr tr-fade"></span><span>Fundido</span></button>
+            <button class="card" type="button" data-transition="dip"><span class="thumb thumb-tr tr-dip"></span><span>A negro</span></button>
+            <button class="card" type="button" data-transition="slideL"><span class="thumb thumb-tr tr-slideL"></span><span>Deslizar ←</span></button>
+            <button class="card" type="button" data-transition="slideR"><span class="thumb thumb-tr tr-slideR"></span><span>Deslizar →</span></button>
+            <button class="card" type="button" data-transition="zoom"><span class="thumb thumb-tr tr-zoom"></span><span>Zoom</span></button>
+            <button class="card" type="button" data-transition="wipe"><span class="thumb thumb-tr tr-wipe"></span><span>Cortinilla</span></button>
+          </div>
+          <label class="slider"><span>Duración</span><output></output>
+            <input type="range" data-prop="transDur" min="0.2" max="2" step="0.1" value="0.6" data-unit="s">
+          </label>
+        </section>
+
+        <!-- Subtítulos -->
+        <section class="tab-body" data-body="captions" hidden>
+          <h3 class="section-title">Subtítulos manuales</h3>
+          <textarea id="captionText" rows="3" placeholder="Escribe el subtítulo…"></textarea>
+          <label class="slider"><span>Duración</span><output id="captionDurLabel">3.0 s</output>
+            <input id="captionDuration" type="range" min="1" max="10" step="0.5" value="3">
+          </label>
+          <button id="btnAddCaption" class="btn btn-accent btn-block" type="button">Añadir subtítulo en el cursor</button>
+          <p class="hint">Se crea con estilo de subtítulo en la parte inferior. Edita fuente y colores en el panel derecho. Los subtítulos automáticos no están disponibles en esta versión.</p>
+        </section>
+
+        <!-- Filtros -->
+        <section class="tab-body" data-body="filters" hidden>
+          <h3 class="section-title">Filtros</h3>
+          <p class="muted small">Selecciona primero un clip de vídeo o imagen.</p>
+          <div class="card-grid" id="filterGrid">
+            <button class="card" type="button" data-filter="none"><span class="thumb thumb-none">∅</span><span>Original</span></button>
+            <button class="card" type="button" data-filter="bw"><span class="thumb thumb-flt fl-bw"></span><span>B / N</span></button>
+            <button class="card" type="button" data-filter="sepia"><span class="thumb thumb-flt fl-sepia"></span><span>Sepia</span></button>
+            <button class="card" type="button" data-filter="vivid"><span class="thumb thumb-flt fl-vivid"></span><span>Vívido</span></button>
+            <button class="card" type="button" data-filter="cool"><span class="thumb thumb-flt fl-cool"></span><span>Frío</span></button>
+            <button class="card" type="button" data-filter="warm"><span class="thumb thumb-flt fl-warm"></span><span>Cálido</span></button>
+            <button class="card" type="button" data-filter="vintage"><span class="thumb thumb-flt fl-vintage"></span><span>Vintage</span></button>
+            <button class="card" type="button" data-filter="drama"><span class="thumb thumb-flt fl-drama"></span><span>Dramático</span></button>
+            <button class="card" type="button" data-filter="soft"><span class="thumb thumb-flt fl-soft"></span><span>Suave</span></button>
+          </div>
+          <label class="slider"><span>Intensidad</span><output></output>
+            <input type="range" data-prop="filterStrength" min="0" max="100" step="1" value="100" data-unit="%">
+          </label>
+        </section>
+
+      </div>
     </aside>
 
-    <!-- CENTRO: VISTA PREVIA -->
+    <!-- ---------- CENTRO: REPRODUCTOR ---------- -->
     <section id="playerArea">
-      <div id="stage">
-        <canvas id="previewCanvas" width="1280" height="720"></canvas>
-        <div id="stageEmpty">Vista previa del proyecto</div>
+      <div id="playerHeader">
+        <span class="muted small">Reproductor</span>
+      </div>
+
+      <div id="stageWrap">
+        <div id="stage">
+          <canvas id="previewCanvas" width="1280" height="720"></canvas>
+          <div id="stageEmpty">Importa un archivo y añádelo a la línea de tiempo</div>
+        </div>
       </div>
 
       <div id="transport">
-        <button id="btnToStart" class="btn" type="button" title="Ir al inicio">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
-        </button>
-        <button id="btnPlay" class="btn btn-primary" type="button" title="Reproducir / Pausar (Espacio)">
-          <svg id="iconPlay" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>
-          <svg id="iconPause" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-        </button>
         <span id="timeDisplay">00:00.0 / 00:00.0</span>
+        <div class="transport-center">
+          <button id="btnToStart" class="btn btn-ghost" type="button" title="Ir al inicio"><span class="ic" data-icon="tostart"></span></button>
+          <button id="btnPlay" class="btn btn-play" type="button" title="Reproducir / Pausar (Espacio)"><span class="ic" data-icon="play"></span></button>
+        </div>
+        <div class="transport-right">
+          <select id="aspectSelect" title="Relación de aspecto" aria-label="Relación de aspecto">
+            <option value="16:9" selected>16:9</option>
+            <option value="9:16">9:16</option>
+            <option value="1:1">1:1</option>
+            <option value="4:3">4:3</option>
+            <option value="3:4">3:4</option>
+            <option value="21:9">21:9</option>
+          </select>
+          <button id="btnFullscreen" class="btn btn-ghost" type="button" title="Pantalla completa"><span class="ic" data-icon="fullscreen"></span></button>
+        </div>
       </div>
     </section>
 
-    <!-- PANEL DERECHO: PROPIEDADES -->
+    <!-- ---------- PANEL DERECHO ---------- -->
     <aside id="rightPanel" class="panel">
-      <h2 class="panel-title">Propiedades</h2>
-
-      <p id="propsEmpty" class="muted">Selecciona un clip de la línea de tiempo para ver sus propiedades.</p>
+      <p id="propsEmpty" class="muted pad">Selecciona un clip de la línea de tiempo para editar sus propiedades.</p>
 
       <div id="propsBody" hidden>
-        <div class="prop-row"><span>Nombre</span><strong id="propName">-</strong></div>
-        <div class="prop-row"><span>Tipo</span><strong id="propType">-</strong></div>
-        <div class="prop-row"><span>Inicio</span><strong id="propStart">-</strong></div>
-        <div class="prop-row"><span>Duración</span><strong id="propDuration">-</strong></div>
+        <div id="propsHeader"><strong id="propClipName">Clip</strong><span id="propClipInfo" class="muted small"></span></div>
 
-        <div id="rowVolume" class="prop-block">
-          <label for="propVolume">Volumen <output id="propVolumeLabel">100%</output></label>
-          <input id="propVolume" type="range" min="0" max="200" step="1" value="100">
-        </div>
+        <nav id="propTabs">
+          <button class="prop-tab" type="button" data-ptab="text">Texto</button>
+          <button class="prop-tab active" type="button" data-ptab="video">Vídeo</button>
+          <button class="prop-tab" type="button" data-ptab="audio">Audio</button>
+          <button class="prop-tab" type="button" data-ptab="speed">Velocidad</button>
+          <button class="prop-tab" type="button" data-ptab="anim">Animación</button>
+          <button class="prop-tab" type="button" data-ptab="adjust">Ajuste</button>
+        </nav>
 
-        <div id="rowOpacity" class="prop-block">
-          <label for="propOpacity">Opacidad <output id="propOpacityLabel">100%</output></label>
-          <input id="propOpacity" type="range" min="0" max="100" step="1" value="100">
-        </div>
+        <div id="propContent">
 
-        <p class="hint">Más herramientas (velocidad, rotación, color, animación) llegarán en las próximas etapas.</p>
-      </div>
-    </aside>
-  </main>
-
-  <!-- LÍNEA DE TIEMPO -->
-  <section id="timelineArea">
-    <div id="timelineToolbar">
-      <button id="btnSplit" class="btn" type="button" title="Dividir en el cursor (S)">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18"/><path d="M5 8l-2 4 2 4M19 8l2 4-2 4"/></svg>
-        <span class="btn-text">Dividir</span>
-      </button>
-      <button id="btnDuplicate" class="btn" type="button" title="Duplicar (D)">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
-        <span class="btn-text">Duplicar</span>
-      </button>
-      <button id="btnDelete" class="btn btn-danger" type="button" title="Eliminar (Supr)">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
-        <span class="btn-text">Eliminar</span>
-      </button>
-
-      <span class="spacer"></span>
-
-      <button id="btnZoomOut" class="btn" type="button" title="Alejar">−</button>
-      <span id="zoomLabel">100%</span>
-      <button id="btnZoomIn" class="btn" type="button" title="Acercar">+</button>
-    </div>
-
-    <div id="timelineBody">
-      <div id="trackLabels">
-        <div class="label-spacer"></div>
-        <div class="track-label" data-kind="video">Vídeo</div>
-        <div class="track-label" data-kind="image">Imagen</div>
-        <div class="track-label" data-kind="text">Texto · pronto</div>
-        <div class="track-label" data-kind="audio">Audio</div>
-      </div>
-
-      <div id="timelineScroll">
-        <div id="timelineInner">
-          <div id="ruler"></div>
-          <div id="lanes">
-            <div class="lane" id="lane-video" data-kind="video"></div>
-            <div class="lane" id="lane-image" data-kind="image"></div>
-            <div class="lane lane-disabled" id="lane-text" data-kind="text"></div>
-            <div class="lane" id="lane-audio" data-kind="audio"></div>
+          <!-- Texto -->
+          <div class="prop-body" data-pbody="text" hidden>
+            <label class="field"><span>Contenido</span><textarea data-prop="text" rows="3"></textarea></label>
+            <label class="field"><span>Fuente</span>
+              <select data-prop="font">
+                <option value="Arial">Arial</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Brush Script MT">Brush Script MT</option>
+                <option value="sans-serif">Sans-serif del sistema</option>
+                <option value="serif">Serif del sistema</option>
+                <option value="monospace">Monoespaciada</option>
+              </select>
+            </label>
+            <label class="slider"><span>Tamaño</span><output></output><input type="range" data-prop="fontSize" min="16" max="300" step="1" value="72" data-unit="px"></label>
+            <div class="row">
+              <button type="button" class="btn toggle" data-toggle="bold"><strong>B</strong></button>
+              <button type="button" class="btn toggle" data-toggle="italic"><em>I</em></button>
+              <button type="button" class="btn toggle" data-align="left" title="Izquierda">⟸</button>
+              <button type="button" class="btn toggle" data-align="center" title="Centro">≡</button>
+              <button type="button" class="btn toggle" data-align="right" title="Derecha">⟹</button>
+            </div>
+            <div class="row color-row">
+              <label class="color"><span>Color</span><input type="color" data-prop="color" value="#ffffff"></label>
+              <label class="color"><span>Contorno</span><input type="color" data-prop="strokeColor" value="#000000"></label>
+              <label class="color"><span>Sombra</span><input type="color" data-prop="shadowColor" value="#000000"></label>
+              <label class="color"><span>Fondo</span><input type="color" data-prop="bgColor" value="#000000"></label>
+            </div>
+            <label class="slider"><span>Grosor del contorno</span><output></output><input type="range" data-prop="strokeWidth" min="0" max="30" step="1" value="0" data-unit="px"></label>
+            <label class="slider"><span>Desenfoque de sombra</span><output></output><input type="range" data-prop="shadowBlur" min="0" max="40" step="1" value="0" data-unit="px"></label>
+            <label class="slider"><span>Opacidad del fondo</span><output></output><input type="range" data-prop="bgOpacity" min="0" max="100" step="1" value="0" data-unit="%"></label>
           </div>
-          <div id="playhead"><div id="playheadHandle"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-</div>
-
-<div id="toast" role="status" aria-live="polite"></div>
-
-<script src="app.js"></script>
-</body>
-</html>
+          <!-- Vídeo (básico) -->
+          <div class="prop-body" data-pbody="video">
+            <label class="slider"><span>Escala</span><output></output><input type="range" data-prop="scale" min="10" max="400" step="1" value="100" data-unit="%"></label>
+            <label class="slider"><span>Posición X</span><output></output><input type="range" data-prop="posX" min="-100" max="100" step="1" value="0" data-unit="%"></label>
+            <label class="slider"><span>Posición Y</span><output></output><input type="range" data-prop="posY" min="-100" max="100" step="1" value="0" data-unit="%"></label>
+            <label class="slider"><span>Rotación</span><output></output><input type="range" data-prop="rotation" min="-180" max="180" step="1" value="0" data-unit="°"></label>
+            <label class="slider"><span>Opacidad</span><output></output><input type="range" data-prop="opacity" min="0" max="100" step="1" value="100" data-unit="%"></label>
+            <div class="row">
+              <button type="button" class="btn toggle" data-toggle="flipH">Espejo ↔</button>
+              <button type="button" class="btn toggle" data-toggle="flipV">Espejo ↕</button>
+              <button type="button" class="btn" data-reset="transform">Restablecer</button>
+            </div>
+            <h3 class="section-title">Recorte</h3>
+            <label class="slider"><span>Izquierda</span><output></output><input type="range" data-prop="cropL" min="0" max="90" step="1" value="0" data-unit="%"></label>
+            <label class="slider"><span>Derecha</span><output></output><input type="range" d
