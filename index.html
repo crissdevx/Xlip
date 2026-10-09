@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101014">
+  <title>XLIP Studio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="./">XLIP<span> STUDIO</span></a>
+    <button id="saveProject" class="secondary">Guardar proyecto</button>
+  </header>
+
+  <main class="editor">
+    <aside class="sidebar">
+      <h2>Tu estudio</h2>
+      <button id="importBtn" class="primary">＋ Importar archivos</button>
+      <input id="fileInput" type="file"
+        accept="video/*,image/*,audio/*" multiple hidden>
+
+      <h3>Medios</h3>
+      <div id="mediaList" class="media-list">
+        <p class="muted">Tus vídeos, imágenes y audios aparecerán aquí.</p>
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <div class="section-heading">
+        <div>
+          <h1>Editor de vídeo</h1>
+          <p class="muted">Crea algo que se vea diferente.</p>
+        </div>
+        <span class="version">ALPHA 0.1</span>
+      </div>
+
+      <div class="preview">
+        <div id="previewContent" class="preview-content">
+          <div class="welcome">
+            <div class="play-symbol">▶</div>
+            <h2>XLIP STUDIO</h2>
+            <p>Importa un vídeo para comenzar</p>
+          </div>
+        </div>
+        <div id="textOverlay" class="text-overlay"></div>
+      </div>
+
+      <div class="player-controls">
+        <button id="playBtn" class="primary">▶ Reproducir</button>
+        <span id="timeDisplay">00:00 / 00:00</span>
+      </div>
+
+      <section class="panel">
+        <h2>✦ Efectos y color</h2>
+
+        <label>Brillo <span id="brightnessValue">100%</span>
+          <input id="brightness" type="range" min="0" max="200" value="100">
+        </label>
+
+        <label>Contraste <span id="contrastValue">100%</span>
+          <input id="contrast" type="range" min="0" max="200" value="100">
+        </label>
+
+        <label>Saturación <span id="saturationValue">100%</span>
+          <input id="saturation" type="range" min="0" max="200" value="100">
+        </label>
+
+        <label>Desenfoque <span id="blurValue">0 px</span>
+          <input id="blur" type="range" min="0" max="10" value="0">
+        </label>
+
+        <div class="button-row">
+          <button class="secondary filter" data-filter="none">Original</button>
+          <button class="secondary filter" data-filter="bw">Blanco y negro</button>
+          <button class="secondary filter" data-filter="sepia">Sepia</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>✎ Texto</h2>
+        <input id="textInput" type="text" maxlength="100"
+          placeholder="Escribe un título para tu vídeo">
+        <div class="button-row">
+          <button id="addText" class="primary">Añadir texto</button>
+          <button id="removeText" class="secondary">Quitar texto</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>▤ Línea de tiempo</h2>
+        <p class="muted">Selecciona un clip para verlo en la previsualización.</p>
+        <div id="timeline" class="timeline">
+          <p class="muted">Importa medios para comenzar tu montaje.</p>
+        </div>
+      </section>
+
+      <p id="status" class="status" role="status">Listo para editar.</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
